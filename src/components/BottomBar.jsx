@@ -4,7 +4,7 @@ import OrdersIcon from '../assets/icons/orders.svg'
 
 const BottomBar = () => {
     return(
-        <div className="flex w-screen justify-between px-4">
+        <div className="flex w-screen justify-between px-4 bg-white">
             <div className="flex flex-col items-center">
                 <img className="w-8" src={HomeIcon} alt="Home"/>
                 <p className="text-[#828282] text-sm">Home</p>
