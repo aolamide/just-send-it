@@ -54,9 +54,7 @@ export default defineConfig({
             }
           ]
         },
-        devOptions: {
-          enabled: true
-        }
+
       })
   ],
   base: '/just-send-it/'
