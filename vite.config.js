@@ -59,6 +59,6 @@ export default defineConfig({
         }
       })
   ],
-
+  // base: '/just-send-it/'
 })
 
