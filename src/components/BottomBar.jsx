@@ -5,18 +5,18 @@ import OrdersIcon from '../assets/icons/orders.svg'
 const BottomBar = () => {
     return(
         <div className="flex w-screen justify-between px-4 bg-white">
-            <div className="flex flex-col items-center">
+            <button className="flex flex-col items-center">
                 <img className="w-8" src={HomeIcon} alt="Home"/>
                 <p className="text-[#828282] text-sm">Home</p>
-            </div>
-            <div className="flex flex-col items-center">
+            </button>
+            <button className="flex flex-col items-center">
                 <img className="w-8" src={OrdersIcon} alt="Home"/>
                 <p className="text-[#828282] text-sm">My Orders</p>
-            </div>
-            <div className="flex flex-col items-center">
+            </button>
+            <button className="flex flex-col items-center">
                 <img className="w-8" src={MoreIcon} alt="Home"/>
                 <p className="text-[#828282] text-sm">More</p>
-            </div>
+            </button>
         </div>
     )
 }

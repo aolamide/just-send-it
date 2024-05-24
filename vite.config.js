@@ -12,7 +12,7 @@ export default defineConfig({
           name: 'JustSendIt',
           short_name: 'JustSendIt',
           description: 'JustSendIt',
-          theme_color: '#ffffff',
+          theme_color: '#1E6D80',
           screenshots: [
             {
               src: 'screenshot.png',
@@ -54,9 +54,9 @@ export default defineConfig({
             }
           ]
         },
-        devOptions: {
-          enabled: true
-        }
+        // devOptions: {
+        //   enabled: true
+        // }
       })
   ],
   // base: '/just-send-it/'

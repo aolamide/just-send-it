@@ -16,7 +16,7 @@ const Home = () => {
 
             <img className="w-full h-[30vh]" src={DeliveryManWithBox} alt="delivery man"/>
             <p className="font-inter text-2xlxl">Send items safely, deliver fast </p>
-            <p className="font-inter text-xl">send, track and get notified</p>
+            <p className="font-inter text-xl">Send, track and get notified</p>
 
 
         </div>
