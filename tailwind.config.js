@@ -8,8 +8,13 @@ export default {
     extend: {
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
-        akaya: ['Akaya Telivigala', 'system-ui']
+        akaya: ['Akaya Telivigala', 'system-ui'],
+        poppins: ['Poppins', 'sans-serif'],
+        josefinSans: ['Josefin Sans', 'sans-serif']
       },
+      colors: {
+        primary : '#1E6D80'
+      }
     },
   },
   plugins: [],

@@ -58,7 +58,6 @@ export default defineConfig({
         //   enabled: true
         // }
       })
-  ],
-  // base: '/just-send-it/'
+  ]
 })
 
