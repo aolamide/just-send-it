@@ -5,7 +5,7 @@ function App() {
     const navigate = useNavigate();
     useEffect(() => {
         const timer = setTimeout(() => {
-            navigate('/home');
+            navigate('/start');
         }, 1500);
 
         return () => clearTimeout(timer);

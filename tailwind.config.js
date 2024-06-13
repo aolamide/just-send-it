@@ -13,7 +13,8 @@ export default {
         josefinSans: ['Josefin Sans', 'sans-serif']
       },
       colors: {
-        primary : '#1E6D80'
+        primary : '#1E6D80',
+        successGreen: '#00C795'
       }
     },
   },
