@@ -31,7 +31,7 @@ export const apiSlice = createApi({
 
         riderLogin: builder.mutation({
             query: (body) => ({
-                url: `auth/customer/rider`,
+                url: `auth/rider/login`,
                 method: "POST",
                 body,
             }),
@@ -71,6 +71,21 @@ export const apiSlice = createApi({
             transformResponse: (response) => response.data,
         }),
 
+        pickupPackage: builder.mutation({
+            query: (id) => ({
+                url: `delivery/${id}/pickup`,
+                method: "PUT"
+            }),
+            transformResponse: (response) => response.data,
+        }),
+
+        deliverPackage: builder.mutation({
+            query: (payload) => ({
+                url: `delivery/${payload.deliveryId}/deliver?token=${payload.token}`,
+                method: "PUT"
+            })
+        }),
+
     }),
 });
 
@@ -83,4 +98,6 @@ export const {
     useGetDeliveryRateMutation,
     useCreateDeliveryMutation,
     useConfirmPaymentMutation,
+    usePickupPackageMutation,
+    useDeliverPackageMutation,
 } = apiSlice;

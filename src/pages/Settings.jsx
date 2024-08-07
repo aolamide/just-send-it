@@ -31,6 +31,11 @@ const SettingsPage = () => {
                 <p className="text-lg">{user.email}</p>
             </div>
 
+            {user.phone_number && <div className="mt-4">
+                <p className="text-zinc-600 text-sm">Phone Number</p>
+                <p className="text-lg">{user.phone_number}</p>
+            </div> }
+
             <div className="my-8">
                 <button onClick={logoutUser} className="text-red-600 text-xl">Logout</button>
             </div>

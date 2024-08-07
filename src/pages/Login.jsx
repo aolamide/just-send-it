@@ -24,7 +24,13 @@ const Login = () => {
                 email: username,
                 password
             };
-            const res = await loginCustomer(data).unwrap();
+            let res;
+            if(role === 'customer') {
+               res = await loginCustomer(data).unwrap();
+            } else {
+                res = await loginRider(data).unwrap();
+            }
+
             dispatch(login(res.data));
             toast.success(`Login successful`);
             navigate('/home');

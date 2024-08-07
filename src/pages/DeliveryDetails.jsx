@@ -1,24 +1,10 @@
 import ArrowLeft from "../assets/icons/arrow-left.svg";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {useGetDeliveryDetailsMutation} from "../app/api.js";
+import {useGetDeliveryDetailsMutation, usePickupPackageMutation} from "../app/api.js";
 import handleErrors from "../utils/handleErrors.js";
 import {useSelector} from "react-redux";
-
-const mockStatusUpdates = [
-    {
-        datetime: "1 Jun 2024, 10:27",
-        details: "Order Placed"
-    },
-    {
-        datetime: "1 Jun 2024, 10:45",
-        details: "Pickup @ 127 Adeola Odeku, VI, Lagos. \n Alimi Olamide, +2348083327583"
-    },
-    {
-        datetime: "1 Jun 2024, 11:11",
-        details: "Dropoff @ 3b Cocoa Industries Road, Lagos, Nigeria \n Jola Ayeye, +2348171245571"
-    },
-]
+import toast from "react-hot-toast";
 
 const DeliveryDetails = () => {
     const { deliveryId } = useParams();
@@ -28,9 +14,8 @@ const DeliveryDetails = () => {
     const [delivery, setDelivery] = useState(null);
     const fetchDeliveryDetails = async () => {
         try {
-            const res = await getDeliveryDetails(deliveryId);
-            setDelivery(res.data);
-            console.log(res.data);
+            const data = await getDeliveryDetails(deliveryId).unwrap();
+            setDelivery(data);
         } catch(err) {
             console.log(err);
             handleErrors(err);
@@ -60,7 +45,9 @@ const DeliveryDetails = () => {
                 })}
             </ol>
 
-            {userType === 'rider' && <Link to="/confirm-delivery"><button className="bg-primary p-4 rounded-md shadow-md text-white">Confirm Delivery</button> </Link>}
+            {userType === 'customer' && <CustomerView delivery={delivery} />}
+
+            {userType === 'rider' && <RiderView delivery={delivery} /> }
         </div>
     )
 }
@@ -85,11 +72,55 @@ const DeliveryStatusUpdate = ({ datetime, details }) => {
 }
 
 const CustomerView = ({ delivery }) => {
+    if(delivery.status === 'delivered' || delivery.status === 'cancelled') return <></>
     return (
         <div>
-
+            {delivery.rider && <a href={`tel:${delivery.rider.phone}`} className="border-b-2 border-gray-500 p-1 border-dotted">📞 Call Rider</a>}
+            <button className="bg-primary p-3 text-white rounded-md block mt-8">Track Delivery</button>
         </div>
     )
 }
+
+const RiderView = ({ delivery }) => {
+    const [pickup, { isLoading }] = usePickupPackageMutation();
+    const destinationAddress = delivery.addresses.find((address) => address.type === "destination");
+    const pickupAddress = delivery.addresses.find((address) => address.type === "pickup");
+    const [status, setStatus] = useState(delivery.status);
+    const pickupParcel = async () => {
+        if(!window.confirm("Are you sure you want to confirm parcel pickup?")) return;
+        try {
+            await pickup(delivery.id).unwrap();
+            toast.success('Order pickup confirmed.');
+            setStatus('enroute_destination');
+        } catch(err) {
+            handleErrors(err)
+        }
+    }
+    return (
+        <div>
+            {status === "enroute_pickup" && <button disabled={isLoading} onClick={pickupParcel}
+                                                    className="bg-primary p-4 rounded-md shadow-md text-white disabled:cursor-not-allowed disabled:bg-gray-700">{isLoading ? '...' : 'Pickup Parcel'}</button>}
+
+            {status === "enroute_destination" && <Link to={`/confirm-delivery/${delivery.id}`}>
+                <button className="bg-primary p-4 rounded-md shadow-md text-white">Confirm Delivery</button>
+            </Link>}
+
+            <div className="my-4">
+                <p className="text-zinc-600 text-sm">Pickup Details</p>
+                <p>{pickupAddress.full_name}</p>
+                <p>{pickupAddress.address}</p>
+                <p>{pickupAddress.phone_number}</p>
+            </div>
+
+            <div className="my-4">
+                <p className="text-zinc-600 text-sm">Drop-off Details</p>
+                <p>{destinationAddress.full_name}</p>
+                <p>{destinationAddress.address}</p>
+                <p>{destinationAddress.phone_number}</p>
+            </div>
+        </div>
+    )
+}
+
 
 export default DeliveryDetails;

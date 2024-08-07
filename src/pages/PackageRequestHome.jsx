@@ -42,10 +42,7 @@ const PackageRequestHome = () => {
     const submitDelivery = async () => {
         try {
             const data = await createDelivery({ pickup: { ...pickupAddress, area: +pickupAddress.area}, destination : { ...destinationAddress, area: +destinationAddress.area} }).unwrap();
-            console.log(data);
             window.location.href = data.authorization_url;
-            // setRate(data.rate);
-            // setSheetOpen(true);
         } catch(err) {
             handleErrors(err);
         }

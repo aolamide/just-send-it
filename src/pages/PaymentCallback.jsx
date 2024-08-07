@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {useConfirmPaymentMutation} from "../app/api.js";
 import handleErrors from "../utils/handleErrors.js";
 import toast from "react-hot-toast";
+import {resetAddresses} from "../app/addressSlice.js";
+import {useDispatch} from "react-redux";
 
 const PaymentCallback = () => {
     const location = useLocation();
@@ -10,6 +12,7 @@ const PaymentCallback = () => {
     const [confirmPayment, { isLoading } ] = useConfirmPaymentMutation();
     const query = new URLSearchParams(location.search);
     const paymentRef = query.get('reference');
+    const dispatch = useDispatch();
 
     const validatePayment = async () => {
         try {
@@ -18,10 +21,11 @@ const PaymentCallback = () => {
             }
             const data = await confirmPayment(paymentRef).unwrap();
             toast.success(`Payment successful`);
+            dispatch(resetAddresses());
             navigate(`/my-deliveries/${data.id}`);
         } catch(err) {
             handleErrors(err);
-            navigate('/home');
+            navigate('/send-package');
             console.log(err);
         }
     }

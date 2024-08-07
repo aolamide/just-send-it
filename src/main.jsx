@@ -33,7 +33,7 @@ const router = createBrowserRouter([
                 element: <SettingsPage />,
             },
             {
-                path: "/confirm-delivery",
+                path: "/confirm-delivery/:deliveryId",
                 element: <ConfirmDelivery />,
             },
             {

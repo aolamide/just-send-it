@@ -31,10 +31,11 @@ export const addressSlice = createSlice({
         },
         setDestinationAddress: (state, action) => {
             state.destinationAddress = action.payload;
-        }
+        },
+        resetAddresses: (state, action) => ({ ...initialState, areas: state.areas })
     },
 });
 
-export const { setAreas, setDestinationAddress, setPickupAddress } = addressSlice.actions;
+export const { setAreas, setDestinationAddress, setPickupAddress, resetAddresses } = addressSlice.actions;
 
 export default addressSlice.reducer;
