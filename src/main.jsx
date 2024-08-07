@@ -1,5 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { Provider } from "react-redux";
+import store from "./app/store";
 import App from './App.jsx'
 import './index.css'
 import {RouterProvider, createBrowserRouter} from "react-router-dom";
@@ -14,6 +16,8 @@ import Login from "./pages/Login.jsx";
 import Start from "./pages/Start.jsx";
 import SettingsPage from "./pages/Settings.jsx";
 import ConfirmDelivery from "./pages/ConfirmDelivery.jsx";
+import {Toaster} from "react-hot-toast";
+import PaymentCallback from "./pages/PaymentCallback.jsx";
 
 
 const router = createBrowserRouter([
@@ -71,10 +75,17 @@ const router = createBrowserRouter([
         path: "/start",
         element: <Start />
     },
+    {
+        path: "/payment-callback",
+        element: <PaymentCallback />
+    },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+        <Toaster position="top-center" />
+      </Provider>
   </React.StrictMode>,
 )

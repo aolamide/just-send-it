@@ -1,30 +1,24 @@
 import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useGetDeliveriesMutation} from "../app/api.js";
 
-
-const mockDeliveries = [
-    {
-        id: 'XMFW-3774',
-        date: '01-06-2024',
-        time: '10:27',
-        pickupAddress: '7 Okeke Street, Yaba, Lagos.',
-        destinationAddress: 'Faculty of Engineering, Unilag.',
-        status: 'In Progress',
-        amount: '2,000'
-    },
-    {
-        id: 'XMFE-1233',
-        date: '28-05-2024',
-        time: '15:34',
-        pickupAddress: '127 Adeola Odeku, VI, Lagos.',
-        destinationAddress: '30 Abebe Street, Epe, Lagos.',
-        status: 'Successful',
-        amount: '1,500'
-    },
-]
 const MyDeliveries = () => {
+    const [fetchDeliveries, { isLoading }] = useGetDeliveriesMutation();
+    const [deliveries, setDeliveries] = useState([]);
+    const getDeliveries = async ()  => {
+        try {
+            const res = await fetchDeliveries().unwrap();
+            setDeliveries(res.deliveries);
+        } catch {
+            console.log("Could not fetch deliveries.");
+        }
+    }
+    useEffect( () => {
+        getDeliveries()
+    }, []);
     return (
-        <div className="p-3">
-            {mockDeliveries.map(delivery => {
+        <div className="p-3 mb-12">
+            {deliveries.map(delivery => {
                 return <DeliveryCard key={delivery.id} deliveryDetails={delivery} />
             })}
         </div>
@@ -32,21 +26,42 @@ const MyDeliveries = () => {
 }
 
 const DeliveryCard = ({ deliveryDetails }) => {
-    const { date, time, amount, id, destinationAddress, status } = deliveryDetails;
+    const { created_at, price, delivery_number, status, id, addresses } = deliveryDetails;
+    const destinationAddress = addresses.find((address) => address.type === "destination");
     return (
         <Link to={`/my-deliveries/${id}`} className="font-josefinSans bg-[#202124] mb-3 rounded-md text-white p-2 text-sm flex flex-col gap-3">
             <div className="flex justify-between">
-                <span>{date}, { time }</span>
-                <span>N { amount }</span>
+                <span>{new Date(created_at).toDateString()}, {new Date(created_at).toLocaleTimeString()}</span>
+                <span>N { price }</span>
             </div>
             <div className="flex justify-between items-center">
-                <span>{id}</span>
-                <span className={`bg-red-600 px-3 py-1 rounded-3xl text-xs ${status === 'Successful' ? 'text-black bg-successGreen' : 'text-[#DA9451] bg-[#FFE5CE]'}`}>{ status }</span>
+                <span>{delivery_number}</span>
+                <span className={`px-3 py-1 rounded-3xl text-xs ${statusColorBg(status)}`}>{ getMappedOrderStatus(status) }</span>
             </div>
             <div>
-                {destinationAddress}
+                {destinationAddress.address}
             </div>
         </Link>
     )
+}
+
+const statusColorBg = (status) => {
+    const maps = {
+        delivered: 'text-black bg-successGreen',
+        cancelled: 'bg-[#cf332d] text-[#FFE5CE]'
+    }
+    if(maps[status]) return maps[status];
+    else return "bg-[#dccb26] text-[#2b2926]"
+}
+
+const getMappedOrderStatus = (status) => {
+    const maps = {
+        awaiting_rider: 'Ongoing',
+        enroute_pickup: 'Ongoing',
+        enroute_destination: 'Ongoing',
+        delivered: 'Delivered',
+        cancelled: 'Cancelled'
+    }
+    return maps[status];
 }
 export default MyDeliveries;

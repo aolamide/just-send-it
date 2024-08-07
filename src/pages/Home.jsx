@@ -2,16 +2,12 @@ import DeliveryManWithBox from '../assets/icons/delivery-man-with-box.svg'
 import Box from '../assets/icons/box.svg'
 import ArrowRight from '../assets/icons/arrow-right.svg'
 import {Link} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useSelector} from "react-redux";
 
 const Home = () => {
-    const [userType, setUserType] = useState('');
-    useEffect(() => {
-        const type = localStorage.getItem('userType');
-        setUserType(type);
-    }, []);
-    if(!userType) return <div></div>
-    else if(userType === "customer") {
+    const role = useSelector((state) => state.user.role);
+    if(!role) return <div></div>
+    else if(role === "customer") {
         return (
             <div className="p-4 h-screen">
                 <p className='text-3xl my-5 font-josefinSans'>Have a package to send or received? Prepare your package, and let us just send
