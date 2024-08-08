@@ -18,6 +18,7 @@ import SettingsPage from "./pages/Settings.jsx";
 import ConfirmDelivery from "./pages/ConfirmDelivery.jsx";
 import {Toaster} from "react-hot-toast";
 import PaymentCallback from "./pages/PaymentCallback.jsx";
+import Register from "./pages/Register.jsx";
 
 
 const router = createBrowserRouter([
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
     {
         path: "/login",
         element: <Login />
+    },
+    {
+        path: "/register",
+        element: <Register />
     },
     {
         path: "/start",

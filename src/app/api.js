@@ -37,6 +37,22 @@ export const apiSlice = createApi({
             }),
         }),
 
+        customerRegister: builder.mutation({
+            query: (body) => ({
+                url: `auth/customer/register`,
+                method: "POST",
+                body,
+            }),
+        }),
+
+        riderRegister: builder.mutation({
+            query: (body) => ({
+                url: `auth/rider/register`,
+                method: "POST",
+                body,
+            }),
+        }),
+
         getDeliveryAreas: builder.mutation({
             query: () =>  `rates/areas`,
             transformResponse: (response) => response.data,
@@ -92,6 +108,8 @@ export const apiSlice = createApi({
 export const {
     useCustomerLoginMutation,
     useRiderLoginMutation,
+    useCustomerRegisterMutation,
+    useRiderRegisterMutation,
     useGetDeliveriesMutation,
     useGetDeliveryDetailsMutation,
     useGetDeliveryAreasMutation,
