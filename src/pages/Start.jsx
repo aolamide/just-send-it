@@ -1,9 +1,17 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {setUserType} from "../app/userSlice.js";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
 
 const Start = () => {
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.user);
+    const navigate = useNavigate();
+    useEffect(() => {
+        if(user) {
+            navigate('/home');
+        }
+    }, []);
     return (
         <>
             <div className="bg-primary h-screen">
